@@ -1,4 +1,11 @@
+using Final_Project_Web_App.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<TeamContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("TeamContext")));
+builder.Services.AddRouting(options => { options.LowercaseUrls = true; options.AppendTrailingSlash = true; });
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
