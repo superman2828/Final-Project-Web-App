@@ -1,0 +1,70 @@
+@model List<Teams>
+@{
+    ViewData["Title"] = "NFL Teams";
+    int? selectedConference = ViewBag.SelectedConference;
+    int? selectedDivision = ViewBag.SelectedDivision;
+}
+
+<h1>NFL Teams</h1>
+
+<form method="get" asp-action="Index" class="row g-2 align-items-end mb-3">
+    <div class="col-auto">
+        <label for="conferenceId" class="form-label">Conference</label>
+        <select id="conferenceId" name="conferenceId" class="form-select">
+            <option value="">All conferences</option>
+            @foreach (var c in (List<Conference>)ViewBag.Conferences)
+            {
+                <option value="@c.conferenceId" selected="@(c.conferenceId == selectedConference)">@c.ConferenceName</option>
+            }
+        </select>
+    </div>
+    <div class="col-auto">
+        <label for="divisionId" class="form-label">Division</label>
+        <select id="divisionId" name="divisionId" class="form-select">
+            <option value="">All divisions</option>
+            @foreach (var d in (List<Division>)ViewBag.Divisions)
+            {
+                <option value="@d.divisionId" selected="@(d.divisionId == selectedDivision)">@d.divisionName</option>
+            }
+        </select>
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Filter</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Clear</a>
+    </div>
+</form>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Add team</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Team</th>
+            <th>Conference</th>
+            <th>Division</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var team in Model)
+        {
+            <tr>
+                <td>@team.TeamName</td>
+                <td>@team.Conference?.ConferenceName</td>
+                <td>@team.Division?.divisionName</td>
+                <td class="text-end">
+                    <a asp-action="Details" asp-route-id="@team.Id">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@team.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@team.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!Model.Any())
+{
+    <p>No teams match this filter.</p>
+}
