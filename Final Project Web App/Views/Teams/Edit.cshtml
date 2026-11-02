@@ -1,0 +1,38 @@
+@model Teams
+@{
+    ViewData["Title"] = "Edit team";
+}
+
+<h1>Edit team</h1>
+
+<form asp-action="Edit" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label asp-for="TeamName" class="form-label">Team name</label>
+        <input asp-for="TeamName" class="form-control" />
+        <span asp-validation-for="TeamName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="conferenceId" class="form-label">Conference</label>
+        <select asp-for="conferenceId" asp-items="@((SelectList)ViewBag.Conferences)" class="form-select">
+            <option value="">Select a conference</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="divisionId" class="form-label">Division</label>
+        <select asp-for="divisionId" asp-items="@((SelectList)ViewBag.Divisions)" class="form-select">
+            <option value="">Select a division</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save changes</button>
+    <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
